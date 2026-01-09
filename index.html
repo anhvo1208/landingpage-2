@@ -5,21 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HR Health Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800&family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
     <nav class="navbar">
         <div class="logo">⚡ HR INTELLIGENCE</div>
         <div class="nav-pills">
-            <button class="nav-pill active" onclick="switchPage(1)">OVERVIEW</button>
-            <button class="nav-pill" onclick="switchPage(2)">STRUCTURE</button>
-            <button class="nav-pill" onclick="switchPage(3)">ATTRITION</button>
-            <button class="nav-pill" onclick="switchPage(4)">ENGAGEMENT</button>
-            <button class="nav-pill" onclick="switchPage(5)">HIRING</button>
+            <button class="nav-pill active" data-page="1">OVERVIEW</button>
+            <button class="nav-pill" data-page="2">STRUCTURE</button>
+            <button class="nav-pill" data-page="3">ATTRITION</button>
+            <button class="nav-pill" data-page="4">ENGAGEMENT</button>
+            <button class="nav-pill" data-page="5">HIRING</button>
         </div>
         <div class="filter-section">
             <span class="filter-label">DEPT:</span>
-            <select class="filter-select" onchange="updateDashboard()">
+            <select class="filter-select" id="deptFilter">
                 <option value="All">All</option>
                 <option value="Sales">Sales</option>
                 <option value="R&D">R&D</option>
@@ -29,111 +30,176 @@
     </nav>
 
     <div class="container">
-        <div class="page" id="page1">
+        <!-- Page 1 -->
+        <div class="page active" data-page="1">
             <div class="page-header">
                 <h1>Executive HR Health Overview</h1>
                 <p>Real-time workforce intelligence & performance metrics</p>
             </div>
             
-            <div class="kpi-grid" id="kpi1"></div>
-            
+            <div class="kpi-grid">
+                <div class="kpi-card" style="border-left:3px solid #00d4ff" data-goto="2">
+                    <div class="kpi-icon" style="background:rgba(0,212,255,0.2);color:#00d4ff">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-title">TOTAL HEADCOUNT</div>
+                        <div class="kpi-value" style="color:#00d4ff">1,470</div>
+                        <div class="kpi-subtitle">Active Employees</div>
+                    </div>
+                </div>
+
+                <div class="kpi-card" style="border-left:3px solid #ff006e" data-goto="3">
+                    <div class="kpi-icon" style="background:rgba(255,0,110,0.2);color:#ff006e">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-title">ATTRITION RATE</div>
+                        <div class="kpi-value" style="color:#ff006e">16.12%</div>
+                        <div class="kpi-subtitle">12-month average</div>
+                    </div>
+                </div>
+
+                <div class="kpi-card" style="border-left:3px solid #ffbe0b" data-goto="5">
+                    <div class="kpi-icon" style="background:rgba(255,190,11,0.2);color:#ffbe0b">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-title">AVG TIME TO HIRE</div>
+                        <div class="kpi-value" style="color:#ffbe0b">17.8 days</div>
+                        <div class="kpi-subtitle">Recruitment speed</div>
+                    </div>
+                </div>
+
+                <div class="kpi-card" style="border-left:3px solid #06ffa5" data-goto="4">
+                    <div class="kpi-icon" style="background:rgba(6,255,165,0.2);color:#06ffa5">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-title">JOB SATISFACTION</div>
+                        <div class="kpi-value" style="color:#06ffa5">2.73</div>
+                        <div class="kpi-subtitle">Out of 4.0</div>
+                    </div>
+                </div>
+
+                <div class="kpi-card" style="border-left:3px solid #ff9f1c">
+                    <div class="kpi-icon" style="background:rgba(255,159,28,0.2);color:#ff9f1c">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-title">AVG MONTHLY INCOME</div>
+                        <div class="kpi-value" style="color:#ff9f1c">$6,503</div>
+                        <div class="kpi-subtitle">Compensation</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="chart-grid-2">
                 <div class="chart-card">
                     <h3>Workforce & Attrition Trend</h3>
-                    <canvas id="c1"></canvas>
+                    <div class="chart-wrapper">
+                        <canvas id="chart1"></canvas>
+                    </div>
                 </div>
                 <div class="chart-card">
                     <h3>Attrition by Department</h3>
-                    <canvas id="c2"></canvas>
+                    <div class="chart-wrapper">
+                        <canvas id="chart2"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="page hidden" id="page2">
+        <!-- Other pages similar -->
+        <div class="page" data-page="2">
             <div class="page-header">
                 <h1>Workforce Structure & Demographics</h1>
                 <p>Organizational composition & diversity analysis</p>
             </div>
-            <div class="kpi-grid" id="kpi2"></div>
+            <div class="kpi-grid" id="kpi-page2"></div>
             <div class="chart-grid-2">
                 <div class="chart-card chart-card-large">
                     <h3>Department × Job Level Distribution</h3>
-                    <canvas id="c3"></canvas>
+                    <div class="chart-wrapper"><canvas id="chart3"></canvas></div>
                 </div>
                 <div class="chart-grid-mini">
                     <div class="chart-card">
                         <h3>Gender Distribution</h3>
-                        <canvas id="c4"></canvas>
+                        <div class="chart-wrapper"><canvas id="chart4"></canvas></div>
                     </div>
                     <div class="chart-card">
                         <h3>Age Groups</h3>
-                        <canvas id="c5"></canvas>
+                        <div class="chart-wrapper"><canvas id="chart5"></canvas></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="page hidden" id="page3">
+        <div class="page" data-page="3">
             <div class="page-header">
                 <h1>Attrition & Workforce Stability</h1>
                 <p>Turnover trends & retention insights</p>
             </div>
-            <div class="kpi-grid" id="kpi3"></div>
+            <div class="kpi-grid" id="kpi-page3"></div>
             <div class="chart-grid-2">
                 <div class="chart-card">
                     <h3>Attrition by Department</h3>
-                    <canvas id="c6"></canvas>
+                    <div class="chart-wrapper"><canvas id="chart6"></canvas></div>
                 </div>
                 <div class="chart-card">
                     <h3>Hiring vs Attrition Trend</h3>
-                    <canvas id="c7"></canvas>
+                    <div class="chart-wrapper"><canvas id="chart7"></canvas></div>
                 </div>
             </div>
         </div>
 
-        <div class="page hidden" id="page4">
+        <div class="page" data-page="4">
             <div class="page-header">
                 <h1>Engagement, Performance & Well-being</h1>
                 <p>Employee satisfaction & productivity metrics</p>
             </div>
-            <div class="kpi-grid" id="kpi4"></div>
+            <div class="kpi-grid" id="kpi-page4"></div>
             <div class="chart-grid-2">
                 <div class="chart-card">
                     <h3>Satisfaction Scores by Department</h3>
-                    <canvas id="c8"></canvas>
+                    <div class="chart-wrapper"><canvas id="chart8"></canvas></div>
                 </div>
                 <div class="chart-card">
                     <h3>Performance vs Job Satisfaction</h3>
-                    <canvas id="c9"></canvas>
+                    <div class="chart-wrapper"><canvas id="chart9"></canvas></div>
                 </div>
             </div>
         </div>
 
-        <div class="page hidden" id="page5">
+        <div class="page" data-page="5">
             <div class="page-header">
                 <h1>Hiring & Workforce Flow</h1>
                 <p>Recruitment efficiency & headcount dynamics</p>
             </div>
-            <div class="kpi-grid" id="kpi5"></div>
+            <div class="kpi-grid" id="kpi-page5"></div>
             <div class="chart-grid-2">
                 <div class="chart-card">
                     <h3>Hiring vs Attrition Over Time</h3>
-                    <canvas id="c10"></canvas>
+                    <div class="chart-wrapper"><canvas id="chart10"></canvas></div>
                 </div>
                 <div class="chart-card">
                     <h3>Time to Hire by Department</h3>
-                    <canvas id="c11"></canvas>
+                    <div class="chart-wrapper"><canvas id="chart11"></canvas></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="loading" class="loading">
-        <div class="loading-spinner"></div>
-        <p>Loading Dashboard...</p>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="./assets/app.js"></script>
 </body>
 </html>
